@@ -1,83 +1,80 @@
 # Infrastructure Web AWS avec Terraform
 
-Ce dépôt contient les fichiers de configuration Terraform nécessaires pour déployer une infrastructure web sur AWS pour le TP2 "Déployer une infrastructure Web avec terraform".
+Ce dépôt contient la configuration Terraform nécessaire pour déployer une infrastructure web complète sur AWS, conformément aux exigences du TP2 "Déployer une infrastructure Web avec terraform".
 
 ## Prérequis
 
-- AWS CLI installé et configuré avec vos identifiants AWS.
-- Terraform installé sur votre machine locale.
+- AWS CLI doit être installé et configuré avec les identifiants d'accès appropriés.
+- Terraform doit être installé sur votre machine locale.
 
-## Configuration initiale
+## Configuration Initiale
 
-1. **AWS CLI Configuration**:
+### Configurer AWS CLI
 
-   Exécutez la commande suivante et entrez vos clés d'accès, la région (`eu-west-1`) et le format de sortie désiré (`json`).
+Exécutez la commande suivante pour configurer AWS CLI avec vos clés d'accès et la région par défaut :
 
-   ```bash
-   aws configure
-Clonage du dépôt:
+```bash
+aws configure
+```
+
+
+## Clonage du dépôt:
 
 Clonez ce dépôt sur votre machine locale en utilisant Git.
 
-bash
-Copy code
+```bash
 git clone https://github.com/votre-username/your-repo-name.git
 cd your-repo-name
-Déploiement des ressources AWS
-Suivez ces étapes pour déployer votre infrastructure :
+```
 
-Initialisation de Terraform:
+## Déploiement des ressources AWS
+
+### Initialisation de Terraform:
 
 Initialisez Terraform pour télécharger les plugins nécessaires.
 
-bash
-Copy code
+```bash
 terraform init
-Création d'un plan de déploiement:
+```
+
+### Création d'un plan de déploiement:
 
 Créez un plan de déploiement Terraform pour visualiser les changements qui seront appliqués.
 
-bash
-Copy code
+```bash
 terraform plan
-Application de la configuration:
+```
+
+### Application de la configuration:
 
 Appliquez la configuration pour créer les ressources dans AWS.
 
-bash
-Copy code
+```bash
 terraform apply
+```
 Vous devrez confirmer l'application en saisissant yes lorsque vous y êtes invité.
 
-Ressources déployées
-Bucket S3:
+## Ressources déployées
+* __Bucket S3__:
+   * Un bucket S3 nommé ynov-infracloud-nomprénom pour stocker les images.
+   * Le fichier puppy.jpg est téléchargé dans le bucket.
+   * L'accès public est configuré pour permettre la récupération des objets.
+* __Security Group__:
 
-Un bucket S3 nommé ynov-infracloud-nomprénom pour stocker les images.
-Le fichier puppy.jpg est téléchargé dans le bucket.
-L'accès public est configuré pour permettre la récupération des objets.
-Security Groups:
+   * Un groupe de sécurité pour les serveurs web autorisant le trafic HTTP et SSH.
+   * Un groupe de sécurité pour la base de données autorisant le trafic depuis les instances EC2.
+* __Launch Template__:
 
-Un groupe de sécurité pour les serveurs web autorisant le trafic HTTP et SSH.
-Un groupe de sécurité pour la base de données autorisant le trafic depuis les instances EC2.
-Launch Template:
+   * Un modèle de lancement pour les instances EC2 avec une image AMI spécifique, un type d'instance et des configurations réseau.
+* __Auto Scaling Group__:
 
-Un modèle de lancement pour les instances EC2 avec une image AMI spécifique, un type d'instance et des configurations réseau.
-Auto Scaling Group:
+   * Un groupe d'Auto Scaling configuré pour lancer automatiquement des instances basées sur le modèle de lancement.
+* __Load Balancer__:
 
-Un groupe d'Auto Scaling configuré pour lancer automatiquement des instances basées sur le modèle de lancement.
-Load Balancer:
+   * Un Load Balancer applicatif configuré pour équilibrer la charge sur les instances EC2.
+* __Listener et Target Group__:
 
-Un Load Balancer applicatif configuré pour équilibrer la charge sur les instances EC2.
-Listener et Target Group:
-
-Un listener configuré sur le port 80 pour le Load Balancer.
-Un groupe cible lié au groupe d'Auto Scaling pour les instances EC2.
+   * Un listener configuré sur le port 80 pour le Load Balancer.
+   * Un groupe cible lié au groupe d'Auto Scaling pour les instances EC2.
+     
 Après l'application de la configuration, vous pouvez accéder à l'adresse DNS du Load Balancer pour voir votre application en action.
-
-Nettoyage
-Pour supprimer les ressources déployées, exécutez la commande suivante :
-
-bash
-Copy code
-terraform destroy
-Vous devrez confirmer la suppression en saisissant yes lorsque vous y êtes invité.
